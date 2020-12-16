@@ -1,0 +1,15 @@
+.usersList {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  max-width: 400px;
+  height: 300px;
+  border: 2px solid gray;
+  border-top: 2px solid white;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.message {
+  text-align: center;
+}

@@ -1,0 +1,13 @@
+.usersListRowItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid gray;
+  padding: 10px;
+  font-size: large;
+  cursor: pointer;
+
+  &:hover {
+    background-color:#F0F8FF;
+  }
+}
