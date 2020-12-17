@@ -28,7 +28,7 @@ const Typeahead = () => {
   if (data) { users = data.items };
 
   return (
-    <div className={styles.app}>
+    <div className={styles.typeahead}>
       <Input 
         changeSearchValue={changeSearchValue} 
         value={searchValue}
