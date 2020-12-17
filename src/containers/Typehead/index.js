@@ -1,5 +1,4 @@
 import React from 'react';
-import useSWR from 'swr';
 
 import Input from '../../components/Input';
 import UsersList from '../../components/UsersList';
@@ -8,23 +7,34 @@ import styles from './styles.module.scss';
 
 const Typeahead = () => {
   const [searchValue, setSearchValue] = React.useState('');
-
-  const changeSearchValue = (value) => setSearchValue(value);
+  const [data, setData] = React.useState('');
+  const [error, setError] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const usersEndpoint = `https://api.github.com/search/users?q=${searchValue}`;
 
-  const getData = async () => {
-    let response = await fetch(usersEndpoint);
+  React.useEffect(() => {
+    const getData = async () => {
+      setLoading(true);
+      setError(false);
 
-    if (response.status >= 400 && response.status <= 499) {
-      throw new Error('Error', await response.json());
-    }
+      const response = await fetch(usersEndpoint);
+  
+      if (response.status >= 400 && response.status <= 499) {
+        setError(true);
+      }
 
-    return await response.json();
-  };
+      const result = await response.json();
+
+      setData(result)
+      setLoading(false);
+    };
+    getData();
+  }, [usersEndpoint])
+
+  const changeSearchValue = (value) => setSearchValue(value);
 
   let users = [];
-  const { data, error } = useSWR(searchValue ? usersEndpoint : null, getData);
   if (data) { users = data.items };
 
   return (
@@ -37,7 +47,8 @@ const Typeahead = () => {
         <UsersList
           users={users}
           data={data}
-          error={error}
+          error={error} 
+          loading={loading}
         />
       )}
     </div>
