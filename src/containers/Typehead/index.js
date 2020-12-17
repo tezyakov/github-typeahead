@@ -2,6 +2,7 @@ import React from 'react';
 
 import Input from '../../components/Input';
 import UsersList from '../../components/UsersList';
+import { debounce } from '../../utils';
 
 import styles from './styles.module.scss';
 
@@ -11,28 +12,21 @@ const Typeahead = () => {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
-  const usersEndpoint = `https://api.github.com/search/users?q=${searchValue}`;
+  const usersEndpoint = `https://api.github.com/search/users?q=`;
 
-  React.useEffect(() => {
-    const getData = async () => {
-      setLoading(true);
+  const debouncedSearch = React.useRef(
+    debounce(async (searchValue) => {
       setError(false);
+      const response = await fetch(`${usersEndpoint}${searchValue}`);
 
-      const response = await fetch(usersEndpoint);
-  
       if (response.status >= 400 && response.status <= 499) {
         setError(true);
       }
-
       const result = await response.json();
-
       setData(result)
       setLoading(false);
-    };
-    getData();
-  }, [usersEndpoint])
-
-  const changeSearchValue = (value) => setSearchValue(value);
+    }, 500)
+  ).current;
 
   let users = [];
   if (data) { users = data.items };
@@ -40,7 +34,9 @@ const Typeahead = () => {
   return (
     <div className={styles.typeahead}>
       <Input 
-        changeSearchValue={changeSearchValue} 
+        setSearchValue={setSearchValue}
+        setLoading={setLoading}
+        debouncedSearch={debouncedSearch}
         value={searchValue}
       />
       {!!searchValue.length && (

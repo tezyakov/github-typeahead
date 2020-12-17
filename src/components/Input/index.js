@@ -8,7 +8,11 @@ const Input = (props) => (
     type="text" 
     placeholder="Enter a username..."
     value={props.value} 
-    onChange={(e) => props.changeSearchValue(e.target.value)} 
+    onChange={(e) => {
+      props.setLoading(true);
+      props.setSearchValue(e.target.value);
+      props.debouncedSearch(e.target.value);
+    }}
   />
 )
   
