@@ -1,6 +1,6 @@
 import React from 'react';
 
-import UsersListRow from '../UsersListRow'
+import UsersListRow from '../UsersListRow/UsersListRow'
 
 import styles from './styles.module.scss';
 

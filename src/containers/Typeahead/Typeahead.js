@@ -1,10 +1,9 @@
 import React from 'react';
 
-import Input from '../../components/Input';
-import UsersList from '../../components/UsersList';
+import Input from '../../components/Input/Input';
+import UsersList from '../../components/UsersList/UsersList';
+import Layout from '../../components/Layout/Layout'
 import { debounce } from '../../utils';
-
-import styles from './styles.module.scss';
 
 const Typeahead = () => {
   const [searchValue, setSearchValue] = React.useState('');
@@ -32,7 +31,7 @@ const Typeahead = () => {
   if (data) { users = data.items };
 
   return (
-    <div className={styles.typeahead}>
+    <Layout>
       <Input 
         setSearchValue={setSearchValue}
         setLoading={setLoading}
@@ -47,7 +46,7 @@ const Typeahead = () => {
           loading={loading}
         />
       )}
-    </div>
+    </Layout>
   );
 }
 
